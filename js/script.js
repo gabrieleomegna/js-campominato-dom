@@ -78,13 +78,18 @@ function generateNewGame (wrapperElement, numberOfsquares) {
         squareContent.classList.add('display-none')
         squareItem.addEventListener('click', 
         function() {
+            let isGameOver = false;
             if (mines.includes(parseInt(squareContent.innerText))) {
                 squareItem.classList.add('bg-red');
+                isGameOver = true;
             } else {
                 squareItem.classList.add('bg-lightblue');
                 squareContent.classList.remove('display-none');
             }
-        })
+            if(isGameOver) {
+                console.log('BOOM');
+            }
+        }, {once: true}) 
     }
 }
 
