@@ -59,9 +59,11 @@ function () {
 
 
 
+
+
 function generateNewGame (wrapperElement, numberOfsquares) {
     wrapperElement.innerHTML = ''
-    let mines = generateMines(16);
+    let mines = generateMines(16, 100);
     console.log(mines);
     for (let i = 1; i <= numberOfsquares; i++) {
         let squareItem = squareGenerator();
@@ -92,22 +94,18 @@ function squareGenerator () {
     
     return squareElement
 }
+
 function getRandomNumber (min,max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 
-
-
-
-
-
-function generateMines(maxNumber) {
+function generateMines(mineNumber, numberOfRange) {
     let arrayNumeriGenerati = [];
-    for (let i = 0; i < maxNumber; i++) {
-        let randomNum = getRandomNumber(1,maxNumber);
+    for (let i = 0; i < mineNumber; i++) {
+        let randomNum = getRandomNumber(1,numberOfRange);
         while (arrayNumeriGenerati.includes(randomNum)) {
-            randomNum = getRandomNumber(1, maxNumber);
+            randomNum = getRandomNumber(1, numberOfRange);
             
         }
         arrayNumeriGenerati.push(randomNum);
