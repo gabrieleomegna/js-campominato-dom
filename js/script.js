@@ -78,7 +78,7 @@ function generateNewGame (wrapperElement, numberOfsquares) {
         squareContent.classList.add('display-none')
         squareItem.addEventListener('click', 
         function() {
-            if (mines.includes(squareContent.innerText)) {
+            if (mines.includes(parseInt(squareContent.innerText))) {
                 squareItem.classList.add('bg-red');
             } else {
                 squareItem.classList.add('bg-lightblue');
