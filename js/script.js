@@ -74,18 +74,16 @@ function generateNewGame (wrapperElement, numberOfsquares) {
         squareItem.append(squareContent);
         squareContent.innerText = getRandomNumber(1,100);
         squareContent.classList.add('display-none')
-
+        squareItem.addEventListener('click', 
+        function() {
+            if (mines.includes(squareContent.innerText)) {
+                squareItem.classList.add('bg-red');
+            } else {
+                squareItem.classList.add('bg-lightblue');
+                squareContent.classList.remove('display-none');
+            }
+        })
     }
-    divSquareElement = document.querySelector('div.square-item');
-    divSquareElement.addEventListener('click', 
-    function() {
-        if (mines.includes(squareContent.innerText)) {
-            squareItem.classList.add('bg-red');
-        } else {
-            squareItem.classList.add('bg-lightblue');
-            squareContent.classList.remove('display-none');
-        }
-    })
 }
 
 function squareGenerator () {
