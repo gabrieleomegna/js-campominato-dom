@@ -36,23 +36,39 @@ function gridGenerator(numberOfSquares, parent) {
 
 const mainContentElement = document.querySelector('div.main-content');
 const btnPlayElement = document.querySelector('button#play');
+const selectorElement = document.querySelector('select#select-difficulty');
 
 btnPlayElement.addEventListener('click', 
 function () {
-    generateNewGame(mainContentElement);
+    switch (parseInt(selectorElement.value)) {
+        case 0:
+        default:
+            generateNewGame(mainContentElement, 100);
+            break
+        case 1:
+            generateNewGame(mainContentElement, 81);
+            break
+        case 2:
+            generateNewGame(mainContentElement, 49);
+    }
+
+
 })
 
 
 
 
 
-function generateNewGame (wrapperElement) {
+function generateNewGame (wrapperElement, numberOfsquares) {
     wrapperElement.innerHTML = ''
     let mines = generateMines(16);
     console.log(mines);
-    for (let i = 1; i <= 100; i++) {
+    for (let i = 1; i <= numberOfsquares; i++) {
         let squareItem = squareGenerator();
         wrapperElement.appendChild(squareItem);
+        const cellsNo = Math.sqrt(numberOfsquares);
+        squareItem.style.width = `calc(100% / ${cellsNo})`
+        squareItem.style.height = `calc(100% / ${cellsNo})`
         
         const squareContent = document.createElement('span');
         squareItem.append(squareContent);
