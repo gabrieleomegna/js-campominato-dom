@@ -1,8 +1,13 @@
-// L'utente clicca su un bottone che genererà una griglia di gioco quadrata.
-// Ogni cella ha un numero progressivo, da 1 a 100.
-// Ci saranno quindi 10 caselle per ognuna delle 10 righe.
-// Quando l'utente clicca su ogni cella, la cella cliccata si colora di azzurro 
-// ed emetto un messaggio in console con il numero della cella cliccata.
+// Copiamo la griglia fatta ieri nella nuova repo e aggiungiamo la logica del gioco
+// Il computer deve generare 16 numeri casuali nello stesso range della difficoltà prescelta: le bombe.
+// Attenzione:
+// nella stessa cella può essere posizionata al massimo una bomba, perciò nell’array delle bombe non potranno esserci due numeri uguali.
+// In seguito l'utente clicca su una cella: se il numero è presente nella lista dei numeri generati:
+// - abbiamo calpestato una bomba
+// - la cella si colora di rosso e la partita termina.
+// Altrimenti la cella cliccata si colora di azzurro e l'utente può continuare a cliccare sulle altre celle.
+// La partita termina quando il giocatore clicca su una bomba o quando raggiunge il numero massimo possibile di numeri consentiti (ovvero quando ha rivelato tutte le celle che non sono bombe).
+// Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha cliccato su una cella che non era una bomba.
 
 
 // btnPlayElement.addEventListener('click',
@@ -11,62 +16,101 @@
     // })
     
     
-    function gridGenerator(numberOfSquares, parent) {
-        for (let i = 0; i < numberOfSquares; i++) {
-            const squareElement = document.createElement('div');
-            squareElement.classList.add('square-item');
-            parent.appendChild(squareElement);
-        }
-    }
-        
-        
-    // ! Aggiungo un EventListener al bottone play
-        // ! genero una griglia quadrata 10x10
-        
-        
-        
-    // ! Aggiungo un event listener per ogni cella in cui:
-        // ! la cella si colora di azzurro
-        // ! emetto un messaggio in console in cui viene scritto il numero della cella corrispondente
-    
-    const mainContentElement = document.querySelector('div.main-content');
-    const btnPlayElement = document.querySelector('button#play');
-    
-    btnPlayElement.addEventListener('click', 
-    function () {
-        generateNewGame(mainContentElement);
-    })
-    
-    
-    
-    
-    
-    function generateNewGame (wrapperElement) {
-        wrapperElement.innerHTML = ''
-        for (let i = 1; i <= 100; i++) {
-            const squareItem = squareGenerator();
-            wrapperElement.appendChild(squareItem);
-            
-            const squareContent = document.createElement('span');
-            const numberInsideSquare = squareItem.append(squareContent);
-            squareContent.innerText = getRandomNumber(1,100);
-            squareContent.classList.add('display-none')
-    
-            squareItem.addEventListener('click', 
-            function() {
-                squareItem.classList.toggle('bg-lightblue');
-                squareContent.classList.toggle('display-none');
-                console.log(squareContent.innerHTML);
-            })
-        }
-    }
-    
-    function squareGenerator () {
+function gridGenerator(numberOfSquares, parent) {
+    for (let i = 0; i < numberOfSquares; i++) {
         const squareElement = document.createElement('div');
         squareElement.classList.add('square-item');
+        parent.appendChild(squareElement);
+    }
+}
+    
+    
+// ! Aggiungo un EventListener al bottone play
+    // ! genero una griglia quadrata 10x10
+    
+    
+    
+// ! Aggiungo un event listener per ogni cella in cui:
+    // ! la cella si colora di azzurro
+    // ! emetto un messaggio in console in cui viene scritto il numero della cella corrispondente
+
+const mainContentElement = document.querySelector('div.main-content');
+const btnPlayElement = document.querySelector('button#play');
+
+btnPlayElement.addEventListener('click', 
+function () {
+    generateNewGame(mainContentElement);
+})
+
+
+
+
+
+function generateNewGame (wrapperElement) {
+    wrapperElement.innerHTML = ''
+    let mines = generateMines(16);
+    console.log(mines);
+    for (let i = 1; i <= 100; i++) {
+        let squareItem = squareGenerator();
+        wrapperElement.appendChild(squareItem);
         
-        return squareElement
+        const squareContent = document.createElement('span');
+        squareItem.append(squareContent);
+        squareContent.innerText = getRandomNumber(1,100);
+        squareContent.classList.add('display-none')
+
     }
-    function getRandomNumber (min,max) {
-        return Math.floor(Math.random() * (max - min + 1) + min);
+    divSquareElement = document.querySelector('div.square-item');
+    divSquareElement.addEventListener('click', 
+    function() {
+        if (mines.includes(squareContent.innerText)) {
+            squareItem.classList.add('bg-red');
+        } else {
+            squareItem.classList.add('bg-lightblue');
+            squareContent.classList.remove('display-none');
+        }
+    })
+}
+
+function squareGenerator () {
+    const squareElement = document.createElement('div');
+    squareElement.classList.add('square-item');
+    
+    return squareElement
+}
+function getRandomNumber (min,max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+
+
+
+
+
+
+function generateMines(maxNumber) {
+    let arrayNumeriGenerati = [];
+    for (let i = 0; i < maxNumber; i++) {
+        let randomNum = getRandomNumber(1,maxNumber);
+        while (arrayNumeriGenerati.includes(randomNum)) {
+            randomNum = getRandomNumber(1, maxNumber);
+            
+        }
+        arrayNumeriGenerati.push(randomNum);
     }
+    return arrayNumeriGenerati
+}
+
+
+
+
+// squareItem.addEventListener('click', 
+// function() {
+//     let mines = generateMines(16);
+//     if (mines.includes(squareContent.innerHTML)) {
+//         squareItem.classList.add('bg-red');
+//     } else {
+//         squareItem.classList.add('bg-lightblue');
+//         squareContent.classList.remove('display-none');
+//     }
+// })
